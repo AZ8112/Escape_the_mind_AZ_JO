@@ -5,7 +5,7 @@ import Level1.Items.Book;
 public class StartingRoom extends Room{
 
     public StartingRoom() {
-        super(0, "Starting Room");
+        super(1, "Starting Room");
     }
 
     @Override
@@ -30,8 +30,7 @@ public class StartingRoom extends Room{
 
             switch (choice) {
                 case 'a':
-                    //put in logic to move ot the next room
-                    break;
+                    return 2;
 
                 case 'b':
                     //put in logic to move ot the next room

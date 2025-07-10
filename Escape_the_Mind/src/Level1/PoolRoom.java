@@ -4,7 +4,7 @@ import Level1.Items.Book;
 
 public class PoolRoom extends Room {
     public PoolRoom() {
-        super(2, "Pool Room");
+        super(3, "Pool Room");
     }
 
     @Override
