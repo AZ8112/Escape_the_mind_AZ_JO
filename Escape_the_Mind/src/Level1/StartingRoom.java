@@ -1,61 +1,71 @@
 package Level1;
+
 import Game.PlayerState;
 import Game.RoomTransitionException;
 import Level1.Items.Book;
 
-
-public class StartingRoom extends Room{
+public class StartingRoom extends Room {
 
     public StartingRoom(PlayerState player) {
         super(1, "Starting Room", player);
     }
 
     @Override
-    public int enter() {
-        while (true) {
-            System.out.println("You open your eyes, you’re in a small room, infront of you a pit opened up in the ground and a bookshelf in the corner." +
-                    "\n" +
-                    "To your right a door which felt eerie and looked old and rotten." +
-                    "\n" +
-                    "To your left another door, this one significantly less rotten but you could hear something coming from behind it, it sounded like flowing water\n");
+    public void enter() {
+        showOptions();
+    }
 
+    private void showOptions() {
+        gui.printText("You open your eyes, you’re in a small room. In front of you, a pit yawns open in the ground.");
+        gui.printText("To your right, a door looks eerie and rotten.");
+        gui.printText("To your left, another door seems less rotten... but from behind it, you hear flowing water.");
+        gui.printText("In the corner stands a lonely bookshelf.");
 
+        gui.printText("\nWhat will you choose to do?");
+        gui.printText("a) Go left (west)");
+        gui.printText("b) Walk north/forward");
+        gui.printText("c) Check out bookshelf");
 
-            System.out.println("\nWhat will you choose to do?\n");
-            System.out.println("a) Go left (west)");
-//            System.out.println("b) Go right (east)");
-            System.out.println("b) Walk north/forward");
-            System.out.println("c) Check out bookshelf");
+        gui.setInputHandler(input -> {
+            if (input == null || input.trim().isEmpty()) {
+                gui.printText("You decide to do nothing. Classic.");
+                showOptions();
+                return;
+            }
 
-
-            char choice = scanner.next().charAt(0);
+            char choice = input.trim().toLowerCase().charAt(0);
 
             switch (choice) {
                 case 'a':
                     returnToNextRoom(2);
+                    break;
 
                 case 'b':
-                    System.out.println("You fall into the dark pit infront of you.");
-                    System.out.println("END\n");
-                    System.out.println("Note: You fell into the pit and died, by breaking your neck.");
+                    gui.printText("You fall into the dark pit in front of you.");
+                    gui.printText("END\n");
+                    gui.printText("Note: You fell into the pit and died, by breaking your neck.");
                     returnToDeath();
+                    break;
 
                 case 'c':
-                    System.out.println("There is one singular book and you take it and read it\n");
-                    Book.BookI();
+                    gui.printText("There is one singular book and you take it and read it.\n");
+                    Book.BookI(gui);
+                    showOptions();
                     break;
 
                 default:
-                    System.out.println("Invalid input. Choose a, b, or c.\n");
+                    gui.printText("Invalid input. Choose a, b, or c.\n");
+                    showOptions();
                     break;
             }
-        }
-    }
-    private void returnToDeath() {
-        throw new RoomTransitionException(-1); // or use a game over flag
+        });
     }
 
-    private void returnToNextRoom(int roomId) {
+    protected void returnToDeath() {
+        throw new RoomTransitionException(-1);
+    }
+
+    protected void returnToNextRoom(int roomId) {
         throw new RoomTransitionException(roomId);
     }
 }

@@ -4,57 +4,67 @@ import Game.PlayerState;
 import Game.RoomTransitionException;
 import Level1.Items.Book;
 
-public class StatueRoom extends Room{
+public class StatueRoom extends Room {
 
-    public  StatueRoom(PlayerState player) {
+    public StatueRoom(PlayerState player) {
         super(2, "Statue Room", player);
     }
 
     @Override
-    public int enter() {
-        while  (true){
-            System.out.println("You enter the room, in front of you a giant statue towering over you, like it’s watching you, its eyes following you wherever you move." +
-                    "\n" +
-                    "to your right(west) you can here the flow of water, to your left (east) is a dark and narrow path, same for the path infront of you (south) seems just as narrow.\n");
+    public void enter() {
+        showOptions();
+    }
 
-            System.out.println("There is one other thing in this room, a bookshelf with one single book taking up its empty space");
+    private void showOptions() {
+        gui.printText("You enter the room. In front of you towers a giant statue, its eyes seemingly tracking your every move.");
+        gui.printText("To your right (west), you hear the flow of water.");
+        gui.printText("To your left (east) is a dark and narrow path.");
+        gui.printText("The path in front of you (south) seems just as narrow.");
+        gui.printText("There is also a bookshelf with one lone book taking up its only shelf.\n");
 
+        gui.printText("What will you choose to do?");
+        gui.printText("a) Go left (east)");
+        gui.printText("b) Go right (west)");
+        gui.printText("c) Walk south/forward");
+        gui.printText("d) Look around");
+        gui.printText("e) Walk over to the bookshelf and take the book");
 
-            System.out.println("\nWhat will you choose to do?\n");
-            System.out.println("a) Go left (east)");
-            System.out.println("b) Go right (west)");
-            System.out.println("c) Walk south/forward");
-            System.out.println("d) Look around");
-            System.out.println("e) Walk over to the bookshelf and take the book");
+        gui.setInputHandler(input -> {
+            if (input == null || input.trim().isEmpty()) {
+                gui.printText("You decide to stand there awkwardly. Try again.");
+                showOptions();
+                return;
+            }
 
+            char choice = input.trim().toLowerCase().charAt(0);
 
-            char choice = scanner.next().charAt(0);
-
-            switch (choice){
+            switch (choice) {
                 case 'a':
                     returnToNextRoom(4);
-
+                    break;
                 case 'b':
                     returnToNextRoom(3);
-
+                    break;
                 case 'c':
                     returnToNextRoom(6);
-
+                    break;
                 case 'd':
-                    System.out.println("As you look around you can feel the statues gaze on you.\n");
+                    gui.printText("As you look around, you feel the statue's gaze burning into your soul. Or your back. Hard to tell.");
+                    showOptions();
                     break;
-
                 case 'e':
-                    Book.BookII();
+                    Book.BookII(gui);
+                    showOptions();
                     break;
-
                 default:
-                    System.out.println("Invalid input. Choose a, b, c, d or e.\n");
+                    gui.printText("Invalid input. Choose a, b, c, d or e.");
+                    showOptions();
                     break;
             }
-        }
+        });
     }
-    private void returnToNextRoom(int roomId) {
+
+    protected void returnToNextRoom(int roomId) {
         throw new RoomTransitionException(roomId);
     }
 }
