@@ -1,10 +1,12 @@
 package Level1;
 
+import Game.PlayerState;
+import Game.RoomTransitionException;
 import Level1.Items.Book;
 
 public class PoolRoom extends Room {
-    public PoolRoom() {
-        super(3, "Pool Room");
+    public PoolRoom(PlayerState player) {
+        super(3, "Pool Room", player);
     }
 
     @Override
@@ -13,8 +15,8 @@ public class PoolRoom extends Room {
             System.out.println("You follow the sound of flowing water and enter a room with a giant pool of water taking up most of the space.");
             System.out.println("In the corner, there’s a single bookshelf.\n");
 
-            System.out.println("What will you choose to do?");
-            System.out.println("a) Go left (east) → back to room 1");
+            System.out.println("\nWhat will you choose to do?\n");
+            System.out.println("a) Go left (east) and back to the statue room");
             System.out.println("b) Go front right (south-west)");
             System.out.println("c) Walk forward left (south-east)");
             System.out.println("d) Look around");
@@ -23,16 +25,20 @@ public class PoolRoom extends Room {
 
             switch (choice) {
                 case 'a':
-                    //put in logic to move ot the next room
+                    returnToNextRoom(2);
+
                 case 'b':
-                    //put in logic to move ot the next room
+                    returnToNextRoom(5);
+
                 case 'c':
-                    //put in logic to move ot the next room
+                    returnToNextRoom(6);
+
                 case 'd':
                     handleLookAround();
                     break;
+
                 default:
-                    System.out.println("Invalid input. Choose a, b, c, or d.");
+                    System.out.println("Invalid input. Choose a, b, c, or d.\n");
             }
         }
     }
@@ -60,20 +66,24 @@ public class PoolRoom extends Room {
                             Book.BookV();
                             break;
                         default:
-                            System.out.println("Choose either 1 or 2.");
+                            System.out.println("Choose either 1 or 2.\n");
                     }
                 } catch (Exception e) {
-                    System.out.println("You must type a number. Back to pool reality.");
+                    System.out.println("You must type a number. Back to pool reality.\n");
                     scanner.nextLine();
                 }
                 break;
 
             case 'b':
-                System.out.println("Great, now you're wet.");
+                System.out.println("Great, now you're wet.\n");
                 break;
 
             default:
-                System.out.println("Choose either a or b.");
+                System.out.println("Choose either a or b.\n");
         }
+    }
+
+    private void returnToNextRoom(int roomId) {
+        throw new RoomTransitionException(roomId);
     }
 }

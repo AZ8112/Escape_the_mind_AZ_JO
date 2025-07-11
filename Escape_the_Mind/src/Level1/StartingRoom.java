@@ -1,11 +1,13 @@
 package Level1;
+import Game.PlayerState;
+import Game.RoomTransitionException;
 import Level1.Items.Book;
 
 
 public class StartingRoom extends Room{
 
-    public StartingRoom() {
-        super(1, "Starting Room");
+    public StartingRoom(PlayerState player) {
+        super(1, "Starting Room", player);
     }
 
     @Override
@@ -20,38 +22,40 @@ public class StartingRoom extends Room{
 
 
             System.out.println("\nWhat will you choose to do?\n");
-            System.out.println("a) Go left (west)\n");
-            System.out.println("b) Go right (east)\n");
-            System.out.println("c) Walk north/forward\n");
-            System.out.println("d) Check out bookshelf\n");
+            System.out.println("a) Go left (west)");
+//            System.out.println("b) Go right (east)");
+            System.out.println("b) Walk north/forward");
+            System.out.println("c) Check out bookshelf");
 
 
             char choice = scanner.next().charAt(0);
 
             switch (choice) {
                 case 'a':
-                    return 2;
+                    returnToNextRoom(2);
 
                 case 'b':
-                    //put in logic to move ot the next room
-                    break;
-
-                case 'c':
-                    System.out.println("You fall into the dark pit infront of you.\n");
+                    System.out.println("You fall into the dark pit infront of you.");
                     System.out.println("END\n");
                     System.out.println("Note: You fell into the pit and died, by breaking your neck.");
-                    return -1;
+                    returnToDeath();
 
-                case 'd':
-                    System.out.println("There is one singular book and you take it and read it");
+                case 'c':
+                    System.out.println("There is one singular book and you take it and read it\n");
                     Book.BookI();
                     break;
 
-
                 default:
-                    System.out.println("Try again");
+                    System.out.println("Invalid input. Choose a, b, or c.\n");
                     break;
             }
         }
+    }
+    private void returnToDeath() {
+        throw new RoomTransitionException(-1); // or use a game over flag
+    }
+
+    private void returnToNextRoom(int roomId) {
+        throw new RoomTransitionException(roomId);
     }
 }
